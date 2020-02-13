@@ -118,15 +118,19 @@ class Game2048:
     def has_move_available(self):
         return self.has_cells_available() or self.has_tile_match_available()
 
-    def play(self, direction):
+    def play(self, action):
+        """ Play a move
+
+        Args:
+            action (src.game.Action2048): move to be made, either UP, RIGHT, DOWN or LEFT
+
+        Returns:
+            int: the score increment i.e., the sum of the values of merged tiles
+
+        Raises:
+            src.game.exceptions.ActionNotPossibleException: if the action is not possible
         """
-        Plays:
-        - @args direction [int]: UP (0), RIGHT (1), DOWN (2) or LEFT (3)
-        - @return (moved, score) [int, int]: number of tiles that have moved
-                                             and the score i.e. the sum of
-                                             the values of merged tiles
-        """
-        moved, score = self.move(direction)
+        moved, score = self.move(action)
         self.score += score
 
         if moved:
@@ -135,4 +139,4 @@ class Game2048:
             if not self.has_move_available():
                 self.game_over = True
             
-        return moved, score
+        return score
