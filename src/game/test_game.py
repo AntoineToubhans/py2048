@@ -29,7 +29,7 @@ def test_game_over(game):
         [16, 2, 4, 16],
     ]))
 
-    assert not game.game_over
+    assert not game.is_game_over()
 
     reward = game.play(Action.RIGHT)
 
@@ -47,7 +47,7 @@ def test_game_over(game):
     np.testing.assert_equal(state[0][1:], np.array([32, 8, 4]))
 
     assert state[0][0] == 2 or state[0][0] == 4
-    assert game.game_over
+    assert game.is_game_over()
 
 
 def test_is_game_over_when_tile_match_are_available(game):
@@ -71,7 +71,7 @@ def test_is_game_over_when_tile_match_are_available(game):
     first_row = list(state[0])
 
     assert first_row == [32, 4, 4, 2] or first_row == [32, 4, 4, 4]
-    assert not game.game_over
+    assert not game.is_game_over()
 
 
 def test_can_move_any_direction_when_cells_are_available(game):

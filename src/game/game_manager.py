@@ -7,7 +7,6 @@ from .reward import Reward
 
 class GameManager:
     def __init__(self):
-        self.game_over = False
         self.score = 0
         self._grid = Grid()
 
@@ -29,8 +28,12 @@ class GameManager:
 
         return False
 
-    def has_move_available(self):
-        return self._grid.has_free_cells_available() or self._grid.has_tile_matches()
+    def is_game_over(self):
+        """
+        Returns:
+            bool: True iff the game is over
+        """
+        return not self._grid.has_free_cells_available() and not self._grid.has_tile_matches()
 
     def play(self, action):
         """ Play a move
@@ -50,7 +53,4 @@ class GameManager:
         if moved:
             self._grid.add_random_tile()
 
-            if not self.has_move_available():
-                self.game_over = True
-            
         return Reward(score=score, tiles_moved=moved)
