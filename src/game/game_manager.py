@@ -29,18 +29,8 @@ class GameManager:
 
         return False
 
-    def has_tile_match_available(self):
-        for i in range(BOARD_SIZE):
-            for j in range(BOARD_SIZE - 1):
-                if self._grid.get(i, j) == self._grid.get(i, j + 1) and self._grid.get(i, j) != 0:
-                    return True
-                if self._grid.get(j, i) == self._grid.get(j + 1, i) and self._grid.get(j, i) != 0:
-                    return True
-
-        return False
-
     def has_move_available(self):
-        return self._grid.has_cells_available() or self.has_tile_match_available()
+        return self._grid.has_free_cells_available() or self._grid.has_tile_matches()
 
     def play(self, action):
         """ Play a move

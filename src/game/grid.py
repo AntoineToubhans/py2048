@@ -32,9 +32,6 @@ class Grid:
             i, j = POSITION_TURNS[direction](i, j)
         self._grid[i][j] = v
 
-    def has_cells_available(self):
-        return self._grid.min() == 0
-
     def _get_available_cells(self):
         return [
             (i, j)
@@ -50,6 +47,19 @@ class Grid:
             raise Exception('No available cell :/')
 
         return cells[int(np.random.random() * len(cells))]
+
+    def has_free_cells_available(self):
+        return self._grid.min() == 0
+
+    def has_tile_matches(self):
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE - 1):
+                if self.get(i, j) == self.get(i, j + 1) and self.get(i, j) != 0:
+                    return True
+                if self.get(j, i) == self.get(j + 1, i) and self.get(j, i) != 0:
+                    return True
+
+        return False
 
     def add_random_tile(self):
         value = 1 if np.random.random() < 0.9 else 2
