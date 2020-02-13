@@ -1,4 +1,5 @@
 from .actions import Action
+from .exceptions import NotPossibleActionException
 from .grid import Grid
 
 
@@ -46,12 +47,17 @@ class GameManager:
                 corresponding to the values of the merged tiles.
 
         Raises:
-            src.game.exceptions.ActionNotPossibleException: if the action is not possible
+            src.game.exceptions.NotPossibleActionException: if the action is not possible
         """
-        tiles_moved, score_increment = self._grid.move(action)
-        self.score += score_increment
+        if not self._grid.can_move(action):
+            raise NotPossibleActionException(action=action)
 
-        if tiles_moved:
-            self._grid.add_random_tile()
+        tiles_moved, score_increment = self._grid.move(action)
+
+        # This assertion should normally always pass
+        assert tiles_moved > 0
+
+        self.score += score_increment
+        self._grid.add_random_tile()
 
         return score_increment

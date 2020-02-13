@@ -1,4 +1,4 @@
-class ActionNotPossibleException(Exception):
+class NotPossibleActionException(Exception):
     """Exception raised when an action is not possible.
 
         Attributes:

@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from src.game import Action, GameManager
+from src.game.exceptions import NotPossibleActionException
 
 
 @pytest.fixture()
@@ -17,9 +18,10 @@ def test_game_over(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    score_increment = game.play(Action.DOWN)
+    with pytest.raises(NotPossibleActionException) as excinfo:
+        game.play(Action.DOWN)
 
-    assert score_increment == 0
+    assert excinfo.value.action == Action.DOWN
 
     np.testing.assert_equal(game.get_state(), np.array([
         [32, 8, 2, 2],
