@@ -1,19 +1,14 @@
 import numpy as np
 
-from .constants import (
-    BOARD_SIZE,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-)
+from .actions import Action2048
+from .constants import BOARD_SIZE
 
 
 POSITION_TURNS = {
-    UP: lambda i, j: (j, i),
-    RIGHT: lambda i, j: (i, BOARD_SIZE - j - 1),
-    DOWN: lambda i, j: (BOARD_SIZE - j - 1, i),
-    LEFT: lambda i, j: (i, j),
+    Action2048.UP: lambda i, j: (j, i),
+    Action2048.RIGHT: lambda i, j: (i, BOARD_SIZE - j - 1),
+    Action2048.DOWN: lambda i, j: (BOARD_SIZE - j - 1, i),
+    Action2048.LEFT: lambda i, j: (i, j),
 }
 
 

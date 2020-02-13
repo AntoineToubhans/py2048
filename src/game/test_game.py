@@ -1,8 +1,7 @@
 import numpy as np
 import pytest
 
-from src.game import Game2048
-from src.game.constants import UP, DOWN, LEFT, RIGHT
+from src.game import Action2048, Game2048
 
 
 @pytest.fixture()
@@ -25,7 +24,7 @@ def test_move_up(game):
         [2, 2, 2, 0],
     ]))
 
-    moved, score = game.move(UP)
+    moved, score = game.move(Action2048.UP)
 
     np.testing.assert_equal(game.grid, np.array([
         [2, 4, 2, 4],
@@ -54,7 +53,7 @@ def test_move_left():
         [2, 2, 2, 0],
     ]))
 
-    moved, score = game.move(LEFT)
+    moved, score = game.move(Action2048.LEFT)
 
     np.testing.assert_equal(game.grid, np.array([
         [4, 0, 0, 0],
@@ -83,7 +82,7 @@ def test_move_right():
         [2, 2, 2, 2],
     ]))
 
-    moved, score = game.move(RIGHT)
+    moved, score = game.move(Action2048.RIGHT)
 
     np.testing.assert_equal(game.grid, np.array([
         [0, 0, 0, 4],
@@ -112,7 +111,7 @@ def test_move_down():
         [2, 2, 4, 0],
     ]))
 
-    moved, score = game.move(DOWN)
+    moved, score = game.move(Action2048.DOWN)
 
     np.testing.assert_equal(game.grid, np.array([
         [0, 0, 0, 0],
@@ -142,7 +141,7 @@ def test_game_over():
         [16, 2, 4, 16],
     ]))
 
-    moved, score = game.play(DOWN)
+    moved, score = game.play(Action2048.DOWN)
 
     np.testing.assert_equal(game.grid, np.array([
         [32, 8, 2, 2],
@@ -155,7 +154,7 @@ def test_game_over():
     assert score == 0
     assert game.game_over == False
 
-    moved, score = game.play(RIGHT)
+    moved, score = game.play(Action2048.RIGHT)
 
     np.testing.assert_equal(game.grid[1:], np.array([
         [8, 16, 4, 8],
@@ -186,7 +185,7 @@ def test_is_game_over_when_tile_match_are_available():
         [16, 2, 4, 16],
     ]))
 
-    moved, score = game.play(LEFT)
+    moved, score = game.play(Action2048.LEFT)
 
     np.testing.assert_equal(game.grid[1:], np.array([
         [8, 16, 8, 32],
@@ -209,10 +208,10 @@ def test_can_move_any_direction_when_cells_are_available():
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    assert game.can_move(UP)
-    assert game.can_move(RIGHT)
-    assert game.can_move(DOWN)
-    assert game.can_move(LEFT)
+    assert game.can_move(Action2048.UP)
+    assert game.can_move(Action2048.RIGHT)
+    assert game.can_move(Action2048.DOWN)
+    assert game.can_move(Action2048.LEFT)
 
 
 def test_can_move_when_no_cells_available():
@@ -224,10 +223,10 @@ def test_can_move_when_no_cells_available():
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    assert not game.can_move(UP)
-    assert not game.can_move(DOWN)
-    assert game.can_move(RIGHT)
-    assert game.can_move(LEFT)
+    assert not game.can_move(Action2048.UP)
+    assert not game.can_move(Action2048.DOWN)
+    assert game.can_move(Action2048.RIGHT)
+    assert game.can_move(Action2048.LEFT)
 
 
 def test_can_move_special_case():
@@ -239,7 +238,7 @@ def test_can_move_special_case():
         [0, 0, 1, 0],
     ]).astype(np.uint8)
 
-    assert game.can_move(UP)
-    assert game.can_move(RIGHT)
-    assert game.can_move(LEFT)
-    assert not game.can_move(DOWN)
+    assert game.can_move(Action2048.UP)
+    assert game.can_move(Action2048.RIGHT)
+    assert game.can_move(Action2048.LEFT)
+    assert not game.can_move(Action2048.DOWN)
