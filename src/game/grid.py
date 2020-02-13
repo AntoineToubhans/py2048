@@ -33,12 +33,7 @@ class Grid:
         self._grid[i][j] = v
 
     def _get_available_cells(self):
-        return [
-            (i, j)
-            for i, xi in enumerate(self._grid)
-            for j, value in enumerate(xi)
-            if value == 0
-        ]
+        return np.argwhere(self._grid == 0)
 
     def _get_random_available_cell(self):
         cells = self._get_available_cells()
