@@ -22,12 +22,12 @@ class Grid:
     def values(self):
         return np.vectorize(lambda v: 2 ** v if v > 0 else 0)(self._grid)
 
-    def get(self, i, j, direction=None):
+    def _get(self, i, j, direction=None):
         if direction is not None:
             i, j = POSITION_TURNS[direction](i, j)
         return self._grid[i][j]
 
-    def set(self, i, j, v, direction=None):
+    def _set(self, i, j, v, direction=None):
         if direction is not None:
             i, j = POSITION_TURNS[direction](i, j)
         self._grid[i][j] = v
@@ -54,9 +54,9 @@ class Grid:
     def has_tile_matches(self):
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE - 1):
-                if self.get(i, j) == self.get(i, j + 1) and self.get(i, j) != 0:
+                if self._get(i, j) == self._get(i, j + 1) and self._get(i, j) != 0:
                     return True
-                if self.get(j, i) == self.get(j + 1, i) and self.get(j, i) != 0:
+                if self._get(j, i) == self._get(j + 1, i) and self._get(j, i) != 0:
                     return True
 
         return False
@@ -70,8 +70,8 @@ class Grid:
         """
         for i in range(BOARD_SIZE):
             for j in range(BOARD_SIZE - 1):
-                value = self.get(i, j, direction=direction)
-                next_value = self.get(i, j + 1, direction=direction)
+                value = self._get(i, j, direction=direction)
+                next_value = self._get(i, j + 1, direction=direction)
                 if value != 0 and value == next_value:
                     return True
                 elif value == 0 and next_value != 0:
@@ -84,7 +84,7 @@ class Grid:
 
         i, j = self._get_random_available_cell()
 
-        self.set(i, j, value)
+        self._set(i, j, value)
 
     def move(self, direction):
         score = 0
@@ -96,20 +96,20 @@ class Grid:
             collapse_value = None
 
             for j in range(BOARD_SIZE):
-                value = self.get(i, j, direction=direction)
+                value = self._get(i, j, direction=direction)
                 if value == 0:
                     offset += 1
                 elif value == collapse_value:
-                    self.set(i, j, 0, direction=direction)
-                    self.set(i, j - offset - 1, value + 1, direction=direction)
+                    self._set(i, j, 0, direction=direction)
+                    self._set(i, j - offset - 1, value + 1, direction=direction)
                     offset += 1
                     collapse_value = None
 
                     score += 2 ** (value + 1)
                     moved += 1
                 elif offset > 0:
-                    self.set(i, j, 0, direction=direction)
-                    self.set(i, j - offset, value, direction=direction)
+                    self._set(i, j, 0, direction=direction)
+                    self._set(i, j - offset, value, direction=direction)
                     collapse_value = value
                     moved += 1
                 else:
