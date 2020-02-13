@@ -12,6 +12,10 @@ POSITION_TURNS = {
 }
 
 
+def _convert_power_two(value):
+    return 2 ** value if value > 0 else 0
+
+
 class Grid:
     """ Grid for 2048 game.
     """
@@ -20,7 +24,7 @@ class Grid:
 
     @property
     def values(self):
-        return np.vectorize(lambda v: 2 ** v if v > 0 else 0)(self._grid)
+        return np.vectorize(_convert_power_two)(self._grid)
 
     def _get(self, i, j, direction=None):
         if direction is not None:
@@ -95,17 +99,20 @@ class Grid:
                 if value == 0:
                     offset += 1
                 elif value == collapse_value:
+                    new_value = value + 1
+
                     self._set(i, j, 0, direction=direction)
-                    self._set(i, j - offset - 1, value + 1, direction=direction)
+                    self._set(i, j - offset - 1, new_value, direction=direction)
                     offset += 1
                     collapse_value = None
 
-                    score += 2 ** (value + 1)
+                    score += _convert_power_two(new_value)
                     moved += 1
                 elif offset > 0:
                     self._set(i, j, 0, direction=direction)
                     self._set(i, j - offset, value, direction=direction)
                     collapse_value = value
+
                     moved += 1
                 else:
                     collapse_value = value
