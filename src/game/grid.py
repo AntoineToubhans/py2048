@@ -35,10 +35,25 @@ class Grid:
     def has_cells_available(self):
         return self._grid.min() == 0
 
-    def get_available_cells(self):
+    def _get_available_cells(self):
         return [
             (i, j)
             for i, xi in enumerate(self._grid)
             for j, value in enumerate(xi)
             if value == 0
         ]
+
+    def _get_random_available_cell(self):
+        cells = self._get_available_cells()
+
+        if len(cells) == 0:
+            raise Exception('No available cell :/')
+
+        return cells[int(np.random.random() * len(cells))]
+
+    def add_random_tile(self):
+        value = 1 if np.random.random() < 0.9 else 2
+
+        i, j = self._get_random_available_cell()
+
+        self.set(i, j, value)

@@ -11,24 +11,9 @@ class GameManager:
         self.score = 0
         self._grid = Grid()
 
-        self.add_random_tile()
-        self.add_random_tile()
+        self._grid.add_random_tile()
+        self._grid.add_random_tile()
 
-    def add_random_tile(self):
-        value = 1 if np.random.random() < 0.9 else 2
-
-        i, j = self.get_random_available_cell()
-        
-        self._grid.set(i, j, value)
-        
-    def get_random_available_cell(self):
-        cells = self._grid.get_available_cells()
-
-        if len(cells) == 0:
-            raise Exception('No available cell :/')
-        
-        return cells[int(np.random.random() * len(cells))]
-    
     def get_state(self):
         return np.vectorize(lambda v: 2**v if v > 0 else 0)(self._grid.grid)
 
@@ -106,7 +91,7 @@ class GameManager:
         self.score += score
 
         if moved:
-            self.add_random_tile()
+            self._grid.add_random_tile()
 
             if not self.has_move_available():
                 self.game_over = True
