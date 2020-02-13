@@ -19,8 +19,8 @@ class Grid:
         self._grid = np.zeros((BOARD_SIZE, BOARD_SIZE)).astype(np.uint8)
 
     @property
-    def grid(self):
-        return self._grid
+    def values(self):
+        return np.vectorize(lambda v: 2 ** v if v > 0 else 0)(self._grid)
 
     def get(self, i, j, direction=None):
         if direction is not None:
@@ -57,3 +57,34 @@ class Grid:
         i, j = self._get_random_available_cell()
 
         self.set(i, j, value)
+
+    def move(self, direction):
+        score = 0
+        moved = 0
+
+        # Collapse & merge
+        for i in range(BOARD_SIZE):
+            offset = 0
+            collapse_value = None
+
+            for j in range(BOARD_SIZE):
+                value = self.get(i, j, direction=direction)
+                if value == 0:
+                    offset += 1
+                elif value == collapse_value:
+                    self.set(i, j, 0, direction=direction)
+                    self.set(i, j - offset - 1, value + 1, direction=direction)
+                    offset += 1
+                    collapse_value = None
+
+                    score += 2 ** (value + 1)
+                    moved += 1
+                elif offset > 0:
+                    self.set(i, j, 0, direction=direction)
+                    self.set(i, j - offset, value, direction=direction)
+                    collapse_value = value
+                    moved += 1
+                else:
+                    collapse_value = value
+
+        return moved, score
