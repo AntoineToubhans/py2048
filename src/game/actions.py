@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class Action2048(Enum):
+class Action(Enum):
     UP = auto()
     RIGHT = auto()
     DOWN = auto()

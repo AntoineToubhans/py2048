@@ -1,19 +1,19 @@
 import numpy as np
 
-from .actions import Action2048
+from .actions import Action
 from .constants import BOARD_SIZE
-from .reward import Reward2048
+from .reward import Reward
 
 
 POSITION_TURNS = {
-    Action2048.UP: lambda i, j: (j, i),
-    Action2048.RIGHT: lambda i, j: (i, BOARD_SIZE - j - 1),
-    Action2048.DOWN: lambda i, j: (BOARD_SIZE - j - 1, i),
-    Action2048.LEFT: lambda i, j: (i, j),
+    Action.UP: lambda i, j: (j, i),
+    Action.RIGHT: lambda i, j: (i, BOARD_SIZE - j - 1),
+    Action.DOWN: lambda i, j: (BOARD_SIZE - j - 1, i),
+    Action.LEFT: lambda i, j: (i, j),
 }
 
 
-class Game2048:
+class GameManager:
     def __init__(self):
         self.game_over = False
         self.score = 0
@@ -123,10 +123,10 @@ class Game2048:
         """ Play a move
 
         Args:
-            action (src.game.Action2048): move to be made, either UP, RIGHT, DOWN or LEFT
+            action (src.game.Action): move to be made, either UP, RIGHT, DOWN or LEFT
 
         Returns:
-            src.game.Reward2048: the reward obtained after the action has been taken
+            src.game.Reward: the reward obtained after the action has been taken
 
         Raises:
             src.game.exceptions.ActionNotPossibleException: if the action is not possible
@@ -140,4 +140,4 @@ class Game2048:
             if not self.has_move_available():
                 self.game_over = True
             
-        return Reward2048(score=score, tiles_moved=moved)
+        return Reward(score=score, tiles_moved=moved)

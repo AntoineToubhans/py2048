@@ -1,4 +1,4 @@
-class Reward2048:
+class Reward:
     """Reward obtained after an action is taken.
 
         Attributes:
