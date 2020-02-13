@@ -117,7 +117,7 @@ def test_game_over(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    score = game.play(Action2048.DOWN)
+    reward = game.play(Action2048.DOWN)
 
     np.testing.assert_equal(game.grid, np.array([
         [32, 8, 2, 2],
@@ -126,12 +126,16 @@ def test_game_over(game):
         [16, 2, 4, 16],
     ]))
 
-    assert score == 0
+    assert reward.score == 0
+    assert reward.tiles_moved == 0
+
     assert not game.game_over
 
-    score = game.play(Action2048.RIGHT)
+    reward = game.play(Action2048.RIGHT)
 
-    assert score == 4
+    assert reward.score == 4
+    assert reward.tiles_moved == 3
+
     np.testing.assert_equal(game.grid[1:], np.array([
         [8, 16, 4, 8],
         [2, 64, 16, 2],

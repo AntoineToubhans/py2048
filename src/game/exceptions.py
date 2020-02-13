@@ -3,7 +3,6 @@ class ActionNotPossibleException(Exception):
 
         Attributes:
             action (src.game.Action2048): the impossible action.
-        """
-
+    """
     def __init__(self, action):
         self.action = action

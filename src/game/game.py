@@ -2,6 +2,7 @@ import numpy as np
 
 from .actions import Action2048
 from .constants import BOARD_SIZE
+from .reward import Reward2048
 
 
 POSITION_TURNS = {
@@ -125,7 +126,7 @@ class Game2048:
             action (src.game.Action2048): move to be made, either UP, RIGHT, DOWN or LEFT
 
         Returns:
-            int: the score increment i.e., the sum of the values of merged tiles
+            src.game.Reward2048: the reward obtained after the action has been taken
 
         Raises:
             src.game.exceptions.ActionNotPossibleException: if the action is not possible
@@ -139,4 +140,4 @@ class Game2048:
             if not self.has_move_available():
                 self.game_over = True
             
-        return score
+        return Reward2048(score=score, tiles_moved=moved)
