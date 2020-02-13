@@ -1,6 +1,4 @@
-import numpy as np
-
-from .constants import BOARD_SIZE
+from .actions import Action
 from .grid import Grid
 from .reward import Reward
 
@@ -16,24 +14,23 @@ class GameManager:
     def get_state(self):
         return self._grid.values
 
-    def can_move(self, direction):
-        for i in range(BOARD_SIZE):
-            for j in range(BOARD_SIZE - 1):
-                value = self._grid.get(i, j, direction=direction)
-                next_value = self._grid.get(i, j + 1, direction=direction)
-                if value != 0 and value == next_value:
-                    return True
-                elif value == 0 and next_value != 0:
-                    return True
-
-        return False
-
     def is_game_over(self):
         """
         Returns:
             bool: True iff the game is over
         """
         return not self._grid.has_free_cells_available() and not self._grid.has_tile_matches()
+
+    def get_available_actions(self):
+        """
+        Returns:
+            list[src.game.Action]: the list of available actions
+        """
+        return [
+            action
+            for action in Action
+            if self._grid.can_move(direction=action)
+        ]
 
     def play(self, action):
         """ Play a move

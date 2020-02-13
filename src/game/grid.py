@@ -61,6 +61,24 @@ class Grid:
 
         return False
 
+    def can_move(self, direction):
+        """
+        Args:
+            direction (src.game.Action): an action
+        Returns:
+            bool: True if the action is possible i.e. if it moves tiles
+        """
+        for i in range(BOARD_SIZE):
+            for j in range(BOARD_SIZE - 1):
+                value = self.get(i, j, direction=direction)
+                next_value = self.get(i, j + 1, direction=direction)
+                if value != 0 and value == next_value:
+                    return True
+                elif value == 0 and next_value != 0:
+                    return True
+
+        return False
+
     def add_random_tile(self):
         value = 1 if np.random.random() < 0.9 else 2
 

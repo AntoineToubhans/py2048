@@ -74,7 +74,7 @@ def test_is_game_over_when_tile_match_are_available(game):
     assert not game.is_game_over()
 
 
-def test_can_move_any_direction_when_cells_are_available(game):
+def test_available_actions_when_there_are_free_cells(game):
     game._grid._grid = np.array([
         [5, 2, 1, 1],
         [3, 4, 0, 5],
@@ -82,13 +82,15 @@ def test_can_move_any_direction_when_cells_are_available(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    assert game.can_move(Action.UP)
-    assert game.can_move(Action.RIGHT)
-    assert game.can_move(Action.DOWN)
-    assert game.can_move(Action.LEFT)
+    assert game.get_available_actions() == [
+        Action.UP,
+        Action.RIGHT,
+        Action.DOWN,
+        Action.LEFT,
+    ]
 
 
-def test_can_move_when_no_cells_available(game):
+def test_available_actions_when_there_are_no_free_cells(game):
     game._grid._grid = np.array([
         [5, 2, 1, 1],
         [3, 4, 2, 5],
@@ -96,13 +98,13 @@ def test_can_move_when_no_cells_available(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    assert not game.can_move(Action.UP)
-    assert not game.can_move(Action.DOWN)
-    assert game.can_move(Action.RIGHT)
-    assert game.can_move(Action.LEFT)
+    assert game.get_available_actions() == [
+        Action.RIGHT,
+        Action.LEFT,
+    ]
 
 
-def test_can_move_special_case(game):
+def test_available_actions_when_no_bottom_zero(game):
     game._grid._grid = np.array([
         [0, 0, 0, 0],
         [0, 0, 0, 0],
@@ -110,7 +112,8 @@ def test_can_move_special_case(game):
         [0, 0, 1, 0],
     ]).astype(np.uint8)
 
-    assert game.can_move(Action.UP)
-    assert game.can_move(Action.RIGHT)
-    assert game.can_move(Action.LEFT)
-    assert not game.can_move(Action.DOWN)
+    assert game.get_available_actions() == [
+        Action.UP,
+        Action.RIGHT,
+        Action.LEFT,
+    ]
