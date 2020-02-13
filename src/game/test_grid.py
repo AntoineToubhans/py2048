@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from src.game import Action
+from src.game.exceptions import NoFreeCellError
 from src.game.grid import Grid
 
 
@@ -83,3 +84,14 @@ def test_move_down(grid):
     ]))
 
 
+def test_raise_no_free_cell_error():
+    grid = Grid()
+    grid._grid = np.array([
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+    ]).astype(np.uint8)
+
+    with pytest.raises(NoFreeCellError):
+        grid.add_random_tile()
