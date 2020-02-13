@@ -1,6 +1,5 @@
 from .actions import Action
 from .grid import Grid
-from .reward import Reward
 
 
 class GameManager:
@@ -12,6 +11,10 @@ class GameManager:
         self._grid.add_random_tile()
 
     def get_state(self):
+        """
+        Returns:
+            np.array: the current grid state for the game
+        """
         return self._grid.values
 
     def is_game_over(self):
@@ -39,15 +42,16 @@ class GameManager:
             action (src.game.Action): move to be made, either UP, RIGHT, DOWN or LEFT
 
         Returns:
-            src.game.Reward: the reward obtained after the action has been taken
+            int: the reward obtained after the action has been taken. It is the score increment
+                corresponding to the values of the merged tiles.
 
         Raises:
             src.game.exceptions.ActionNotPossibleException: if the action is not possible
         """
-        moved, score = self._grid.move(action)
-        self.score += score
+        tiles_moved, score_increment = self._grid.move(action)
+        self.score += score_increment
 
-        if moved:
+        if tiles_moved:
             self._grid.add_random_tile()
 
-        return Reward(score=score, tiles_moved=moved)
+        return score_increment

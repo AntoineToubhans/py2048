@@ -17,10 +17,9 @@ def test_game_over(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    reward = game.play(Action.DOWN)
+    score_increment = game.play(Action.DOWN)
 
-    assert reward.score == 0
-    assert reward.tiles_moved == 0
+    assert score_increment == 0
 
     np.testing.assert_equal(game.get_state(), np.array([
         [32, 8, 2, 2],
@@ -31,10 +30,9 @@ def test_game_over(game):
 
     assert not game.is_game_over()
 
-    reward = game.play(Action.RIGHT)
+    score_increment = game.play(Action.RIGHT)
 
-    assert reward.score == 4
-    assert reward.tiles_moved == 3
+    assert score_increment == 4
 
     state = game.get_state()
 
@@ -58,7 +56,9 @@ def test_is_game_over_when_tile_match_are_available(game):
         [4, 1, 2, 4],
     ]).astype(np.uint8)
 
-    game.play(Action.LEFT)
+    score_increment = game.play(Action.LEFT)
+
+    assert score_increment == 4
 
     state = game.get_state()
 
