@@ -1,16 +1,7 @@
 from src.game import GameManager
+from src.utils.timer import timeit
 
-
-class RunAgentTrace:
-    def __init__(self):
-        self.states = []
-        self.actions = []
-        self.rewards = []
-
-    def append(self, state, action, reward):
-        self.states.append(state)
-        self.actions.append(action)
-        self.rewards.append(reward)
+from .run_agent_trace import RunAgentTrace
 
 
 def run_agent(agent):
@@ -24,16 +15,19 @@ def run_agent(agent):
     """
     game_manager = GameManager()
 
+    timed_agent_choose_action = timeit(agent.choose_action)
     run_agent_trace = RunAgentTrace()
 
     while not game_manager.is_game_over():
         state = game_manager.get_state()
         available_action = game_manager.get_available_actions()
 
-        action = agent.choose_action(state, available_action)
+        action_compute_time, action = timed_agent_choose_action(state, available_action)
 
         reward = game_manager.play(action)
 
-        run_agent_trace.append(state, action, reward)
+        run_agent_trace.append(state, action, reward, action_compute_time)
+
+    run_agent_trace.set_final_state(game_manager.get_state())
 
     return run_agent_trace
