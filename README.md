@@ -1,5 +1,7 @@
 # Py2048
 
+[![CircleCI](https://circleci.com/gh/AntoineToubhans/py2048.svg?style=svg)](https://circleci.com/gh/AntoineToubhans/py2048)
+
 Python implementation for the [2048](https://gabrielecirulli.github.io/2048/) tile game.
 
 ## Install
