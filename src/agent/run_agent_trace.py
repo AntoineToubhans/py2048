@@ -38,10 +38,10 @@ class RunAgentTrace:
 
     def __getitem__(self, item):
         return {
-            'state': self.states[item],
-            'action': Action(self.actions[item]),
-            'reward': self.rewards[item],
-            'action_compute_time': self.action_compute_times[item],
+            "state": self.states[item],
+            "action": Action(self.actions[item]),
+            "reward": self.rewards[item],
+            "action_compute_time": self.action_compute_times[item],
         }
 
     def __len__(self):
@@ -51,15 +51,15 @@ class RunAgentTrace:
         trace_length = len(self)
 
         action_description = {
-            f'{action.name}_action_ratio':
-                (self.actions == action.value).sum() / trace_length
+            f"{action.name}_action_ratio": (self.actions == action.value).sum()
+            / trace_length
             for action in Action
         }
 
         return {
-            'length': trace_length,
-            'max_tile': self.final_state.max(),
-            'score': self.rewards.sum(),
-            'mean_compute_action_time': self.action_compute_times.mean(),
+            "length": trace_length,
+            "max_tile": self.final_state.max(),
+            "score": self.rewards.sum(),
+            "mean_compute_action_time": self.action_compute_times.mean(),
             **action_description,
         }

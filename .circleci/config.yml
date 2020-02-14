@@ -16,7 +16,10 @@ jobs:
           name: Test
       - run:
           command: pylint src --ignore-patterns=test
-          name: Lint
+          name: Linter (pylint)
+      - run:
+          command: black src --check
+          name: Formatter (black)
 
 workflows:
   main:

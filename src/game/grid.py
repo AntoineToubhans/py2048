@@ -19,6 +19,7 @@ def _convert_power_two(value):
 
 class Grid:
     """ Grid for 2048 game. """
+
     def __init__(self):
         self._grid = np.zeros((BOARD_SIZE, BOARD_SIZE)).astype(np.uint8)
 
@@ -43,7 +44,7 @@ class Grid:
         cells = self._get_available_cells()
 
         if len(cells) == 0:
-            raise NoFreeCellError('No available cell :/')
+            raise NoFreeCellError("No available cell :/")
 
         return cells[int(np.random.random() * len(cells))]
 

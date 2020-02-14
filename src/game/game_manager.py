@@ -23,18 +23,17 @@ class GameManager:
         Returns:
             bool: True iff the game is over
         """
-        return not self._grid.has_free_cells_available() and not self._grid.has_tile_matches()
+        return (
+            not self._grid.has_free_cells_available()
+            and not self._grid.has_tile_matches()
+        )
 
     def get_available_actions(self):
         """
         Returns:
             list[src.game.Action]: the list of available actions
         """
-        return [
-            action
-            for action in Action
-            if self._grid.can_move(direction=action)
-        ]
+        return [action for action in Action if self._grid.can_move(direction=action)]
 
     def play(self, action):
         """ Play a move

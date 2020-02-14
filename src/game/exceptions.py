@@ -8,6 +8,7 @@ class NotPossibleActionException(Exception):
         Attributes:
             action (src.game.Action): the impossible action.
     """
+
     def __init__(self, action):
         super(NotPossibleActionException, self).__init__(action)
         self.action = action
