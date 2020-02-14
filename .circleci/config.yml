@@ -1,27 +1,39 @@
-version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
-
+version: 2
 jobs:
-  build-and-test:
-    executor: python/default
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.7.6
     steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: pytest
-          name: Test
-      - run:
-          command: pylint src --ignore-patterns=test
-          name: Linter (pylint)
-      - run:
-          command: black src --check
-          name: Formatter (black)
-
-workflows:
-  main:
-    jobs:
-      - build-and-test
+    - checkout
+    - restore_cache:
+        keys:
+        - 3.7-{{ checksum "requirements.txt" }}
+    - run:
+        name: Install dependencies
+        command: |
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install -r requirements.txt
+    - save_cache:
+        paths:
+          - ./venv
+        key: 3.7-{{ checksum "requirements.txt" }}
+    - run:
+        name: Test (pytest)
+        command: |
+          . venv/bin/activate
+          pytest
+    - run:
+        name: Linter (pylint)
+        command: |
+          . venv/bin/activate
+          pylint src --ignore-patterns=test
+    - run:
+        name: Formatter (black)
+        command: |
+          . venv/bin/activate
+          black src --check
+    - store_artifacts:
+        path: lint-project-reports
+        destination: lint-project-reports
