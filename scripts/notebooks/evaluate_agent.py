@@ -2,7 +2,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-from src.agent.random_agent import RandomAgent
+from src.agent import RandomAgent
 from src.agent.runner import run_agent
 
 # %%
