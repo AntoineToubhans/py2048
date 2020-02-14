@@ -1,6 +1,5 @@
 class NoFreeCellError(Exception):
     """Error raises when failing to find a free cell """
-    pass
 
 
 class NotPossibleActionException(Exception):
@@ -10,4 +9,5 @@ class NotPossibleActionException(Exception):
             action (src.game.Action): the impossible action.
     """
     def __init__(self, action):
+        super(NotPossibleActionException, self).__init__(action)
         self.action = action

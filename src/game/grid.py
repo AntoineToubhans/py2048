@@ -31,10 +31,10 @@ class Grid:
             i, j = POSITION_TURNS[direction](i, j)
         return self._grid[i][j]
 
-    def _set(self, i, j, v, direction=None):
+    def _set(self, i, j, value, direction=None):
         if direction is not None:
             i, j = POSITION_TURNS[direction](i, j)
-        self._grid[i][j] = v
+        self._grid[i][j] = value
 
     def _get_available_cells(self):
         return np.argwhere(self._grid == 0)

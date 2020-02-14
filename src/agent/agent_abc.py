@@ -12,4 +12,3 @@ class AbstractAgent(abc.ABC):
         Returns:
             action (src.game.Action): the action the agent choose to play
         """
-        pass
