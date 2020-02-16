@@ -7,6 +7,12 @@
 
 Python implementation for the [2048](https://gabrielecirulli.github.io/2048/) tile game.
 
+## Prerequisites
+
+- python > 3.7
+- docker
+
+
 ## Install
 
 ```
@@ -15,8 +21,22 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Run tests
 
+## Architecture
+
+![Architecture diagram](./docs/images/architecture.jpg)
+
+
+## Start project in local
+
+
+Start elasticsearch and Kibana:
 ```
-pytest src
+docker-compose up -d
 ```
+
+## Code Quality
+
+- run test: `pytest`
+- run linter: `pylint src --ignore-patterns=test`
+- format python code: `black src`
