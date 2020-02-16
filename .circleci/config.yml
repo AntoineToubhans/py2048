@@ -23,7 +23,10 @@ jobs:
         name: Test (pytest)
         command: |
           . venv/bin/activate
-          pytest
+          pytest -vv --cov-report term-missing --no-cov-on-fail --cov=src/ src
+    - store_artifacts:
+        path: .coverage
+        destination: .coverage
     - run:
         name: Linter (pylint)
         command: |
@@ -34,6 +37,3 @@ jobs:
         command: |
           . venv/bin/activate
           black src --check
-    - store_artifacts:
-        path: lint-project-reports
-        destination: lint-project-reports
