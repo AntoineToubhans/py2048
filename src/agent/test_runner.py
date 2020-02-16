@@ -15,19 +15,24 @@ def test_describe_types():
     assert type(trace_description["length"]) == int
     assert type(trace_description["score"]) == np.int64
     assert type(trace_description["max_tile"]) == np.int64
-    assert type(trace_description["mean_compute_action_time"]) == np.float64
-    assert type(trace_description["LEFT_action_ratio"]) == np.float64
-    assert type(trace_description["RIGHT_action_ratio"]) == np.float64
-    assert type(trace_description["UP_action_ratio"]) == np.float64
-    assert type(trace_description["DOWN_action_ratio"]) == np.float64
+    assert type(trace_description["mean_compute_action_time"]) == float
+    assert type(trace_description["action_ratio"]) == dict
+
+    assert type(trace_description["action_ratio"]["LEFT"]) == float
+    assert type(trace_description["action_ratio"]["RIGHT"]) == float
+    assert type(trace_description["action_ratio"]["UP"]) == float
+    assert type(trace_description["action_ratio"]["DOWN"]) == float
 
 
 def test_get_item():
     last_trace_item = trace[-1]
 
-    assert type(last_trace_item["state"]) == np.ndarray
     assert type(last_trace_item["action"]) == Action
     assert type(last_trace_item["reward"]) == np.int64
-    assert type(last_trace_item["action_compute_time"]) == np.float64
+    assert type(last_trace_item["action_compute_time"]) == float
+    assert type(last_trace_item["states"]) == dict
+    assert type(last_trace_item["states"]["before_action"]) == np.ndarray
+    assert type(last_trace_item["states"]["after_action"]) == np.ndarray
 
-    assert last_trace_item["state"].shape == (4, 4)
+    assert last_trace_item["states"]["before_action"].shape == (4, 4)
+    assert last_trace_item["states"]["after_action"].shape == (4, 4)

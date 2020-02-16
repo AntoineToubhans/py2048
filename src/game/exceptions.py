@@ -1,5 +1,5 @@
 class NoFreeCellError(Exception):
-    """Error raises when failing to find a free cell """
+    """Error raised when failing to find a free cell """
 
 
 class NotPossibleActionException(Exception):

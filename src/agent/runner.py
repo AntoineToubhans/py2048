@@ -1,7 +1,7 @@
 from src.game import GameManager
 from src.utils.timer import timeit
 
-from .run_agent_trace import RunAgentTrace
+from .agent_trace import AgentTrace
 
 
 def run_agent(agent):
@@ -16,7 +16,7 @@ def run_agent(agent):
     game_manager = GameManager()
 
     timed_agent_choose_action = timeit(agent.choose_action)
-    run_agent_trace = RunAgentTrace()
+    run_agent_trace = AgentTrace()
 
     while not game_manager.is_game_over():
         state = game_manager.get_state()

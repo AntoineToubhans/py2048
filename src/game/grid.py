@@ -87,7 +87,7 @@ class Grid:
         self._set(i, j, value)
 
     def move(self, direction):
-        score = 0
+        score = np.int64(0)
         moved = 0
 
         # Collapse & merge
