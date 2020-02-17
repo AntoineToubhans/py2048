@@ -59,15 +59,13 @@ class AgentTrace:
             raise AgentTraceFinalStateNotSetError
 
         return {
+            "state_before_action": self._states[item],
             "action": Action(self._actions[item]),
             "reward": self._rewards[item],
             "action_compute_time": self._action_compute_times[item],
-            "states": {
-                "before_action": self._states[item],
-                "after_action": self._final_state
-                if item + 1 == len(self) or item == -1
-                else self._states[item + 1],
-            },
+            "state_after_action": self._final_state
+            if item + 1 == len(self) or item == -1
+            else self._states[item + 1],
         }
 
     def __len__(self):

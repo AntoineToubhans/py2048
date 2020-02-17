@@ -53,27 +53,24 @@ def test_can_access_data_when_final_state_has_been_set(state0, state1, state2, t
         >= {"reward": 666, "action": Action.UP, "action_compute_time": 1.234,}.items()
     )
 
-    assert "states" in trace[0]
-    np.testing.assert_array_equal(trace[0]["states"]["before_action"], state0)
-    np.testing.assert_array_equal(trace[0]["states"]["after_action"], state1)
+    np.testing.assert_array_equal(trace[0]["state_before_action"], state0)
+    np.testing.assert_array_equal(trace[0]["state_after_action"], state1)
 
     assert (
         trace[1].items()
         >= {"reward": 42, "action": Action.DOWN, "action_compute_time": 2.345,}.items()
     )
 
-    assert "states" in trace[1]
-    np.testing.assert_array_equal(trace[1]["states"]["before_action"], state1)
-    np.testing.assert_array_equal(trace[1]["states"]["after_action"], state2)
+    np.testing.assert_array_equal(trace[1]["state_before_action"], state1)
+    np.testing.assert_array_equal(trace[1]["state_after_action"], state2)
 
     assert (
         trace[-1].items()
         >= {"reward": 42, "action": Action.DOWN, "action_compute_time": 2.345,}.items()
     )
 
-    assert "states" in trace[-1]
-    np.testing.assert_array_equal(trace[-1]["states"]["before_action"], state1)
-    np.testing.assert_array_equal(trace[-1]["states"]["after_action"], state2)
+    np.testing.assert_array_equal(trace[-1]["state_before_action"], state1)
+    np.testing.assert_array_equal(trace[-1]["state_after_action"], state2)
 
 
 def test_can_not_append_when_final_state_has_been_set(state2, trace):

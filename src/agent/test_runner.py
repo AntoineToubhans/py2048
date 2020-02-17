@@ -30,9 +30,8 @@ def test_get_item():
     assert type(last_trace_item["action"]) == Action
     assert type(last_trace_item["reward"]) == np.int64
     assert type(last_trace_item["action_compute_time"]) == float
-    assert type(last_trace_item["states"]) == dict
-    assert type(last_trace_item["states"]["before_action"]) == np.ndarray
-    assert type(last_trace_item["states"]["after_action"]) == np.ndarray
+    assert type(last_trace_item["state_before_action"]) == np.ndarray
+    assert type(last_trace_item["state_after_action"]) == np.ndarray
 
-    assert last_trace_item["states"]["before_action"].shape == (4, 4)
-    assert last_trace_item["states"]["after_action"].shape == (4, 4)
+    assert last_trace_item["state_before_action"].shape == (4, 4)
+    assert last_trace_item["state_after_action"].shape == (4, 4)
