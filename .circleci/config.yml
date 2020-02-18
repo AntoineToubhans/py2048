@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build-py:
     working_directory: ~/project
     docker:
       - image: circleci/python:3.7.6
@@ -37,3 +37,33 @@ jobs:
         command: |
           . venv/bin/activate
           black . --check
+
+  build-webapp:
+    working_directory: ~/project/webapp
+    docker:
+      - image: circleci/node:12.13.0
+    steps:
+    - checkout:
+        path: ~/project
+    - restore_cache:
+        keys:
+        - 12.13.0-{{ checksum "yarn.lock" }}
+    - run:
+        name: Install dependencies
+        command: |
+          yarn
+    - save_cache:
+        paths:
+          - ./node_modules
+        key: 12.13.0-{{ checksum "yarn.lock" }}
+    - run:
+        name: Test
+        command: |
+          yarn test
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build-py
+      - build-webapp
