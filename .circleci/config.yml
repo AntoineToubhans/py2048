@@ -36,4 +36,4 @@ jobs:
         name: Formatter (black)
         command: |
           . venv/bin/activate
-          black src --check
+          black . --check

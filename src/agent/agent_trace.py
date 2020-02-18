@@ -72,6 +72,10 @@ class AgentTrace:
         return len(self._states)
 
     def describe(self):
+        if self._final_state is None:
+            # Data should not be retrieved while final state has not been set
+            raise AgentTraceFinalStateNotSetError
+
         trace_length = len(self)
 
         return {
