@@ -39,4 +39,9 @@ docker-compose up -d
 
 - run test: `pytest`
 - run linter: `pylint src --ignore-patterns=test`
-- format python code: `black src`
+- format python code: `black .`
+
+
+## Web App
+
+Doc is [here](./webapp)
