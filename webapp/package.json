@@ -1,4 +1,5 @@
 {
+  "license": "MIT",
   "dependencies": {
     "@elastic/elasticsearch": "^7.6.0",
     "@types/jest": "^25.1.3",

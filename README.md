@@ -45,3 +45,6 @@ docker-compose up -d
 ## Web App
 
 Doc is [here](./webapp)
+
+
+This project is licensed under the terms of the MIT license.
