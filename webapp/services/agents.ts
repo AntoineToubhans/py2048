@@ -73,15 +73,11 @@ export const getAgents = async (): Promise<Agent[]> => {
 
   const response: ApiResponse<SearchResponse<Source>> = await client.search(searchParams);
 
-  const agents = response.body.hits.hits.map(
+  return response.body.hits.hits.map(
     rawAgent => ({
       id: rawAgent._id,
       name: rawAgent._source.name,
       commit_sha: rawAgent._source.commit_sha,
     })
   );
-
-  console.log('Formatted agents', agents);
-
-  return agents;
 };

@@ -6,16 +6,16 @@ interface AuxProps  {
   children: React.ReactNode
 }
 
-const layoutStyle = {
-  margin: 20,
-  padding: 20,
-  border: '1px solid #DDD'
-};
-
 const Layout: React.FC<AuxProps> = props => (
-  <div style={layoutStyle}>
-    <Header />
+  <div>
+    <Header/>
     {props.children}
+     <style jsx global>{`
+        body {
+          margin: 0;
+          padding: 0;
+          background-color: #faf8ef;
+      `}</style>
   </div>
 );
 

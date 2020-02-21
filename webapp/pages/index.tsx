@@ -1,10 +1,10 @@
+import React from "react";
 import useSWR from 'swr';
-
 import { NextPage } from 'next';
 
 import { Agent } from '../types/agent';
-import AgentLink from "../components/AgentLink";
 import Layout from '../components/Layout';
+import AgentTable from "../components/AgentTable";
 
 
 const fetcher = (url: string) => (
@@ -21,18 +21,12 @@ const Agents: NextPage<{}> = () => {
     return <Layout>Error</Layout>
   }
 
-  const agents = data.agents || [];
+  const agents: Agent[] = data.agents || [];
 
   return (
     <Layout>
       <h1>Agents</h1>
-      <ul>
-        {agents.map((agent: Agent) => (
-          <li key={agent.id}>
-            <AgentLink agent={agent}/>
-          </li>
-        ))}
-      </ul>
+      <AgentTable agents={agents}/>
     </Layout>
   );
 };
