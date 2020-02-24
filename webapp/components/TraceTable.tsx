@@ -6,21 +6,43 @@ import {Agent} from "../types/agent";
 
 const formatPercentage = (value: number): string => `${(100 * value).toFixed(2)} %`;
 
-
 interface TraceTableProps {
   agentId: string;
 }
+
+enum ColumnTitle {
+  Score = 'Score',
+  MaxTile = 'Max Tile',
+  Length = '# Steps',
+  MeanComputeTime = 'Mean compute time (ms)',
+  LeftActionRatio = 'Left moves',
+  UpActionRatio = 'Up moves',
+  RightActionRatio = 'Right moves',
+  DownActionRatio = 'Down moves',
+}
+
+const SORT_FIELD_BY_COLUMNS: { [key in ColumnTitle]: string } = {
+  [ColumnTitle.Score]: 'score',
+  [ColumnTitle.MaxTile]: 'max_tile',
+  [ColumnTitle.Length]: 'length',
+  [ColumnTitle.MeanComputeTime]: 'mean_compute_action_time',
+  [ColumnTitle.LeftActionRatio]: 'action_ratio.LEFT',
+  [ColumnTitle.UpActionRatio]: 'action_ratio.UP',
+  [ColumnTitle.RightActionRatio]: 'action_ratio.RIGHT',
+  [ColumnTitle.DownActionRatio]: 'action_ratio.DOWN',
+};
+
 
 const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
   <MaterialTable
     title={`Traces for agent "${agentId}"`}
     columns={[
       {
-        title: 'Score',
+        title: ColumnTitle.Score,
         field: 'score',
       },
       {
-        title: 'Max Tile',
+        title: ColumnTitle.MaxTile,
         field: 'max_tile',
         render: rowData => (
           <>
@@ -30,31 +52,31 @@ const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
         ),
       },
       {
-        title: '# Steps',
+        title: ColumnTitle.Length,
         field: 'length',
       },
       {
-        title: 'Mean compute time (ms)',
+        title: ColumnTitle.MeanComputeTime,
         field: 'mean_compute_action_time',
         render: rawData => (rawData.mean_compute_action_time * 1000).toFixed(6),
       },
       {
-        title: 'Left moves',
+        title: ColumnTitle.LeftActionRatio,
         field: 'action_ratio',
         render: rawData => formatPercentage(rawData.action_ratio.LEFT),
       },
       {
-        title: 'Up moves',
+        title: ColumnTitle.UpActionRatio,
         field: 'action_ratio',
         render: rawData => formatPercentage(rawData.action_ratio.UP),
       },
       {
-        title: 'Right moves',
+        title: ColumnTitle.RightActionRatio,
         field: 'action_ratio',
         render: rawData => formatPercentage(rawData.action_ratio.RIGHT),
       },
       {
-        title: 'Down moves',
+        title: ColumnTitle.DownActionRatio,
         field: 'action_ratio',
         render: rawData => formatPercentage(rawData.action_ratio.DOWN),
       },
@@ -65,6 +87,7 @@ const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
       const data = {
         page: query.page,
         pageSize: query.pageSize,
+        sort: query.orderBy ? `${SORT_FIELD_BY_COLUMNS[query.orderBy.title as ColumnTitle]}:${query.orderDirection}` : undefined,
       };
 
       const response = await fetch(url, {
@@ -75,12 +98,16 @@ const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
         method: "post",
         body: JSON.stringify(data),
       });
+
       const result = await response.json();
 
       return {
         data: result.traces,
         ...result.meta,
       };
+    }}
+    options={{
+      pageSize: 10,
     }}
   />
 );

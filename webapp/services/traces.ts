@@ -37,6 +37,7 @@ export const getTraces = async (
   agentId: string,
   pageSize: number,
   page: number,
+  sort: string,
 ): Promise<{traces: Trace[], totalCount: number}> => {
   const from = pageSize * page;
   const size = pageSize;
@@ -52,7 +53,7 @@ export const getTraces = async (
         },
       },
     },
-    sort: ['score:desc'],
+    sort,
     from,
     size,
   };

@@ -40,7 +40,7 @@ describe("Elasticsearch proxy", () => {
   });
 
   it("should returns agents", async () => {
-    expect(await getTraces("hf4wV3ABBiPUjHVuce72", 1, 0)).toEqual({
+    expect(await getTraces("hf4wV3ABBiPUjHVuce72", 1, 0, "score:desc")).toEqual({
       totalCount: 42,
       traces: [{
         id : "pv4wV3ABBiPUjHVugvFI",
