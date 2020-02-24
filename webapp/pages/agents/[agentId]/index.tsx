@@ -1,8 +1,8 @@
 import React from "react";
 import { useRouter } from 'next/router';
 
-import Layout from '../../components/Layout';
-import TraceTable from "../../components/TraceTable";
+import Layout from '../../../components/Layout';
+import TraceTable from "../../../components/TraceTable";
 
 
 const AgentTracesContent = () => {
