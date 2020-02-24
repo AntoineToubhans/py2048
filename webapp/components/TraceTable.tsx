@@ -35,6 +35,13 @@ const SORT_FIELD_BY_COLUMNS: { [key in ColumnTitle]: string } = {
 const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
   <MaterialTable
     title={`Traces for agent "${agentId}"`}
+    actions={[
+      {
+        icon: 'visibility',
+        tooltip: 'See trace',
+        onClick: (event, rowData) => console.log("Go to ", rowData),
+      },
+    ]}
     columns={[
       {
         title: ColumnTitle.Score,
@@ -107,6 +114,7 @@ const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
     }}
     options={{
       pageSize: 10,
+      actionsColumnIndex: -1,
     }}
   />
 );
