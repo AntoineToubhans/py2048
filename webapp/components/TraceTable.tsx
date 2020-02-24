@@ -1,7 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table";
 import LinearProgress from '@material-ui/core/LinearProgress';
-import {Agent} from "../types/agent";
 
 
 const formatPercentage = (value: number): string => `${(100 * value).toFixed(2)} %`;
