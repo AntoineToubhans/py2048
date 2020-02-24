@@ -1,5 +1,6 @@
 import React from "react";
 import MaterialTable from "material-table";
+import { useRouter } from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 
@@ -10,6 +11,7 @@ interface TraceTableProps {
 }
 
 enum ColumnTitle {
+  Id = 'ID',
   Score = 'Score',
   MaxTile = 'Max Tile',
   Length = '# Steps',
@@ -21,6 +23,7 @@ enum ColumnTitle {
 }
 
 const SORT_FIELD_BY_COLUMNS: { [key in ColumnTitle]: string } = {
+  [ColumnTitle.Id]: 'id',
   [ColumnTitle.Score]: 'score',
   [ColumnTitle.MaxTile]: 'max_tile',
   [ColumnTitle.Length]: 'length',
@@ -32,91 +35,103 @@ const SORT_FIELD_BY_COLUMNS: { [key in ColumnTitle]: string } = {
 };
 
 
-const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => (
-  <MaterialTable
-    title={`Traces for agent "${agentId}"`}
-    actions={[
-      {
-        icon: 'visibility',
-        tooltip: 'See trace',
-        onClick: (event, rowData) => console.log("Go to ", rowData),
-      },
-    ]}
-    columns={[
-      {
-        title: ColumnTitle.Score,
-        field: 'score',
-      },
-      {
-        title: ColumnTitle.MaxTile,
-        field: 'max_tile',
-        render: rowData => (
-          <>
-            <div>{rowData.max_tile}</div>
-            <LinearProgress variant="determinate" value={100 * Math.log2(rowData.max_tile) / 15} />
-          </>
-        ),
-      },
-      {
-        title: ColumnTitle.Length,
-        field: 'length',
-      },
-      {
-        title: ColumnTitle.MeanComputeTime,
-        field: 'mean_compute_action_time',
-        render: rawData => (rawData.mean_compute_action_time * 1000).toFixed(6),
-      },
-      {
-        title: ColumnTitle.LeftActionRatio,
-        field: 'action_ratio',
-        render: rawData => formatPercentage(rawData.action_ratio.LEFT),
-      },
-      {
-        title: ColumnTitle.UpActionRatio,
-        field: 'action_ratio',
-        render: rawData => formatPercentage(rawData.action_ratio.UP),
-      },
-      {
-        title: ColumnTitle.RightActionRatio,
-        field: 'action_ratio',
-        render: rawData => formatPercentage(rawData.action_ratio.RIGHT),
-      },
-      {
-        title: ColumnTitle.DownActionRatio,
-        field: 'action_ratio',
-        render: rawData => formatPercentage(rawData.action_ratio.DOWN),
-      },
-    ]}
-    data={async query => {
-      const url = `/api/agents/${agentId}/traces`;
+const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => {
+  const router = useRouter();
 
-      const data = {
-        page: query.page,
-        pageSize: query.pageSize,
-        sort: query.orderBy ? `${SORT_FIELD_BY_COLUMNS[query.orderBy.title as ColumnTitle]}:${query.orderDirection}` : undefined,
-      };
-
-      const response = await fetch(url, {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+  return (
+    <MaterialTable
+      title={`Traces for agent "${agentId}"`}
+      actions={[
+        {
+          icon: 'visibility',
+          tooltip: 'See trace',
+          onClick: (event, rowData) => {
+            // Awful hack as rowData is either a row or an array of rows.
+            const traceId = (rowData as {id: string}).id;
+            return router.push(`/agents/${agentId}/traces/${traceId}`);
+          },
         },
-        method: "post",
-        body: JSON.stringify(data),
-      });
+      ]}
+      columns={[
+        {
+          title: ColumnTitle.Id,
+          field: 'id',
+        },
+        {
+          title: ColumnTitle.Score,
+          field: 'score',
+        },
+        {
+          title: ColumnTitle.MaxTile,
+          field: 'max_tile',
+          render: rowData => (
+            <>
+              <div>{rowData.max_tile}</div>
+              <LinearProgress variant="determinate" value={100 * Math.log2(rowData.max_tile) / 15}/>
+            </>
+          ),
+        },
+        {
+          title: ColumnTitle.Length,
+          field: 'length',
+        },
+        {
+          title: ColumnTitle.MeanComputeTime,
+          field: 'mean_compute_action_time',
+          render: rawData => (rawData.mean_compute_action_time * 1000).toFixed(6),
+        },
+        {
+          title: ColumnTitle.LeftActionRatio,
+          field: 'action_ratio',
+          render: rawData => formatPercentage(rawData.action_ratio.LEFT),
+        },
+        {
+          title: ColumnTitle.UpActionRatio,
+          field: 'action_ratio',
+          render: rawData => formatPercentage(rawData.action_ratio.UP),
+        },
+        {
+          title: ColumnTitle.RightActionRatio,
+          field: 'action_ratio',
+          render: rawData => formatPercentage(rawData.action_ratio.RIGHT),
+        },
+        {
+          title: ColumnTitle.DownActionRatio,
+          field: 'action_ratio',
+          render: rawData => formatPercentage(rawData.action_ratio.DOWN),
+        },
+      ]}
+      data={async query => {
+        const url = `/api/agents/${agentId}/traces`;
 
-      const result = await response.json();
+        const data = {
+          page: query.page,
+          pageSize: query.pageSize,
+          sort: query.orderBy ? `${SORT_FIELD_BY_COLUMNS[query.orderBy.title as ColumnTitle]}:${query.orderDirection}` : undefined,
+        };
 
-      return {
-        data: result.traces,
-        ...result.meta,
-      };
-    }}
-    options={{
-      pageSize: 10,
-      actionsColumnIndex: -1,
-    }}
-  />
-);
+        const response = await fetch(url, {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: "post",
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        return {
+          data: result.traces,
+          ...result.meta,
+        };
+      }}
+      options={{
+        pageSize: 10,
+        actionsColumnIndex: -1,
+      }}
+    />
+  );
+};
 
 export default TraceTable;
