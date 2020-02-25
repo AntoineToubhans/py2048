@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
 import GameContainer from "./GameContainer";
+import ScoreContainer from "./ScoreContainer";
 import { Transition } from "../types/transition";
 
 
@@ -62,12 +63,13 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
       container
       spacing={1}
       justify="space-around"
-      alignItems="center"
+      alignItems="flex-start"
     >
       <Grid item xs={5}>
         <GameContainer board={transition.state_before_action}/>
       </Grid>
       <Grid item xs={2}>
+        <ScoreContainer title="Reward" value={transition.reward}/>
         <Paper>
           Coucou
         </Paper>
