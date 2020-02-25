@@ -10,7 +10,7 @@ interface GameContainerProps {
 
 const GameContainer: React.FC<GameContainerProps> = ({board}) => (
   <div style={{
-    margin: "40px auto 0 auto",
+    margin: "0 auto",
     padding: 15,
     backgroundColor: colors.middle,
     borderRadius: 6,

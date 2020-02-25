@@ -3,8 +3,8 @@ import MaterialTable from "material-table";
 import { useRouter } from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+import { formatComputeTime, formatPercentage } from "../services/formatHelpers";
 
-const formatPercentage = (value: number): string => `${(100 * value).toFixed(2)} %`;
 
 interface TraceTableProps {
   agentId: string;
@@ -78,7 +78,7 @@ const TraceTable: React.FC<TraceTableProps> = ({ agentId}) => {
         {
           title: ColumnTitle.MeanComputeTime,
           field: 'mean_compute_action_time',
-          render: rawData => (rawData.mean_compute_action_time * 1000).toFixed(6),
+          render: rawData => formatComputeTime(rawData.mean_compute_action_time),
         },
         {
           title: ColumnTitle.LeftActionRatio,

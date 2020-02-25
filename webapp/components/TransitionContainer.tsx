@@ -1,11 +1,30 @@
 import React from "react";
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 import GameContainer from "./GameContainer";
-import ScoreContainer from "./ScoreContainer";
+import GameKPIContainer from "./GameKPIContainer";
 import { Transition } from "../types/transition";
+import { formatComputeTime } from "../services/formatHelpers";
+import { GameAction } from "../types/game";
 
+
+const getActionIcon = (action: GameAction): React.ReactNode => {
+  switch (action) {
+    case "DOWN":
+      return <ArrowDownwardIcon />;
+    case "LEFT":
+      return <ArrowBackIcon />;
+    case "RIGHT":
+      return <ArrowForwardIcon />;
+    default:
+      return <ArrowUpwardIcon />;
+  }
+};
 
 interface TransitionContainerProps {
   agentId: string;
@@ -63,16 +82,28 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
       container
       spacing={1}
       justify="space-around"
-      alignItems="flex-start"
+      alignItems="center"
     >
       <Grid item xs={5}>
         <GameContainer board={transition.state_before_action}/>
       </Grid>
       <Grid item xs={2}>
-        <ScoreContainer title="Reward" value={transition.reward}/>
-        <Paper>
-          Coucou
-        </Paper>
+        <GameKPIContainer
+          title="Transition index"
+          value={transition.transition_index}
+        />
+        <GameKPIContainer
+          title="Reward"
+          value={transition.reward}
+        />
+        <GameKPIContainer
+          title="Action"
+          value={getActionIcon(transition.action)}
+        />
+        <GameKPIContainer
+          title="Compute time (ms)"
+          value={formatComputeTime(transition.action_compute_time)}
+        />
       </Grid>
       <Grid item xs={5}>
         <GameContainer board={transition.state_after_action}/>

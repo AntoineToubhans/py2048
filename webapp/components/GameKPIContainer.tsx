@@ -4,19 +4,19 @@ import { colors } from '../stylesheet';
 
 interface ScoreContainerProps {
   title: string;
-  value: number;
+  value: number | string | React.ReactNode;
 }
 
-const ScoreContainer: React.FC<ScoreContainerProps> = ({title, value}) => (
+const GameKPIContainer: React.FC<ScoreContainerProps> = ({title, value}) => (
   <div
     style={{
       padding: "10px 25px",
       height: 35,
-      width: 120,
+      width: 140,
       lineHeight: "47px",
       fontWeight: "bold",
       fontSize: 25,
-      margin: "8px auto",
+      margin: "0 auto 8px auto",
       textAlign: "center",
       color: colors.white,
       backgroundColor: colors.middle,
@@ -45,4 +45,4 @@ const ScoreContainer: React.FC<ScoreContainerProps> = ({title, value}) => (
   </div>
 );
 
-export default ScoreContainer;
+export default GameKPIContainer;

@@ -4,7 +4,7 @@ import {
 } from '@elastic/elasticsearch'
 
 import { Agent } from "../types/agent";
-import { client, SearchResponse } from "./es_helpers";
+import { client, SearchResponse } from "./esHelpers";
 
 
 const index = "agents";
