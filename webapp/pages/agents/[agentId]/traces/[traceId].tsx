@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from 'next/router';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Layout from '../../../../components/Layout';
 import TransitionContainer from "../../../../components/TransitionContainer";
@@ -13,7 +14,7 @@ const AgentTraceTransitionsContent = () => {
   if (agentId && traceId) {
     return <TransitionContainer agentId={agentId as string} traceId={traceId as string}/>;
   } else {
-    return <div>"Loading"</div>;
+    return <CircularProgress />;
   }
 };
 

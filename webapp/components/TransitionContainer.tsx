@@ -1,16 +1,21 @@
 import React from "react";
 import Grid from '@material-ui/core/Grid';
+import useSWR from 'swr';
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ForwardIcon from '@material-ui/icons/Forward';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import {Divider} from "@material-ui/core";
 
 import GameContainer from "./GameContainer";
 import GameKPIContainer from "./GameKPIContainer";
 import { Transition } from "../types/transition";
 import { formatComputeTime } from "../services/formatHelpers";
 import { GameAction } from "../types/game";
+import TraceCard from "./TraceCard";
 
 
 const getActionIcon = (action: GameAction): React.ReactNode => {
@@ -31,7 +36,19 @@ interface TransitionContainerProps {
   traceId: string;
 }
 
+const fetcher = (url: string) => (
+  fetch(url).then(r => r.json())
+);
+
 const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, traceId}) => {
+  const { data, error } = useSWR(`/api/traces/${traceId}`, fetcher);
+
+  if (!data) {
+    return (
+      <CircularProgress />
+    );
+  }
+
   const transition: Transition = {
     id: "Pf4wV3ABBiPUjHVumvfO",
     agent_trace_id: "6P4wV3ABBiPUjHVumfZ4",
@@ -78,38 +95,52 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
   };
 
   return (
-    <Grid
-      container
-      spacing={0}
-      justify="space-around"
-      alignItems="center"
-    >
-      <Grid item xs={5}>
-        <GameContainer board={transition.state_before_action}/>
+    <>
+      <TraceCard trace={data}/>
+      <Divider />
+      <Grid
+        container
+        spacing={0}
+        justify="space-around"
+        alignItems="center"
+        style={{textAlign: "center"}}
+      >
+        <Grid item xs={5}>
+          <h2>Before</h2>
+        </Grid>
+        <Grid item xs={2}>
+          <ForwardIcon fontSize="large"/>
+        </Grid>
+        <Grid item xs={5}>
+          <h2>After</h2>
+        </Grid>
+        <Grid item xs={5}>
+          <GameContainer board={transition.state_before_action}/>
+        </Grid>
+        <Grid item xs={2}>
+          <GameKPIContainer
+            title="Transition index"
+            value={`${transition.transition_index} / ${data.length}`}
+          />
+          <GameKPIContainer
+            title="Reward"
+            value={transition.reward}
+          />
+          <GameKPIContainer
+            title="Action"
+            value={getActionIcon(transition.action)}
+          />
+          <GameKPIContainer
+            title="Compute time (ms)"
+            value={formatComputeTime(transition.action_compute_time)}
+          />
+        </Grid>
+        <Grid item xs={5}>
+          <GameContainer board={transition.state_after_action}/>
+        </Grid>
       </Grid>
-      <Grid item xs={2}>
-        <GameKPIContainer
-          title="Transition index"
-          value={transition.transition_index}
-        />
-        <GameKPIContainer
-          title="Reward"
-          value={transition.reward}
-        />
-        <GameKPIContainer
-          title="Action"
-          value={getActionIcon(transition.action)}
-        />
-        <GameKPIContainer
-          title="Compute time (ms)"
-          value={formatComputeTime(transition.action_compute_time)}
-        />
-      </Grid>
-      <Grid item xs={5}>
-        <GameContainer board={transition.state_after_action}/>
-      </Grid>
-    </Grid>
-)
+    </>
+  )
 };
 
 export default TransitionContainer;
