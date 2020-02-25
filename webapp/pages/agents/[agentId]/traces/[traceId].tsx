@@ -2,7 +2,7 @@ import React from "react";
 import { useRouter } from 'next/router';
 
 import Layout from '../../../../components/Layout';
-import Transition from "../../../../components/Transition";
+import TransitionContainer from "../../../../components/TransitionContainer";
 
 
 const AgentTraceTransitionsContent = () => {
@@ -11,7 +11,7 @@ const AgentTraceTransitionsContent = () => {
   const traceId = router.query.traceId;
 
   if (agentId && traceId) {
-    return <Transition agentId={agentId as string} traceId={traceId as string}/>;
+    return <TransitionContainer agentId={agentId as string} traceId={traceId as string}/>;
   } else {
     return <div>"Loading"</div>;
   }
