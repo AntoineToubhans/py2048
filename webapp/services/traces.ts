@@ -69,3 +69,12 @@ export const getTraces = async (
 
   return { traces, totalCount: response.body.hits.total.value }
 };
+
+export const getOneById = async (traceId: string): Promise<Trace> => {
+  const { body } = await client.get({index, id: traceId});
+
+  return {
+    id: body._id,
+    ...body._source,
+  };
+};
