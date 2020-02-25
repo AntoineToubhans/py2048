@@ -1,7 +1,9 @@
 import React from 'react';
 import Head from "next/head";
 
+import { colors } from '../stylesheet';
 import Header from './Header';
+
 
 interface AuxProps  { 
   children: React.ReactNode
@@ -28,8 +30,8 @@ const Layout: React.FC<AuxProps> = props => (
       body {
         margin: 0;
         padding: 0;
-        color: #776e65;
-        background-color: #faf8ef;
+        color: ${colors.dark};
+        background-color: ${colors.light};
         font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
         font-size: 18px;
      `}</style>
