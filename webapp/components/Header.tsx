@@ -9,7 +9,6 @@ import ButtonLink from "./ButtonLink";
 
 
 const headerStyle = {
-  width: "100%",
   height: 60,
   margin: 10,
 };

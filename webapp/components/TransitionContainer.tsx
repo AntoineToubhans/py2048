@@ -80,7 +80,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
   return (
     <Grid
       container
-      spacing={1}
+      spacing={0}
       justify="space-around"
       alignItems="center"
     >
