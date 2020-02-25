@@ -12,6 +12,7 @@ interface AuxProps  {
 const Layout: React.FC<AuxProps> = props => (
   <>
     <Head>
+      <title>2048 Trace Explorer</title>
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link
         rel="stylesheet"
@@ -21,6 +22,7 @@ const Layout: React.FC<AuxProps> = props => (
         rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
+      <link rel="shortcut icon" href="/favicon.ico" />
     </Head>
     <Header/>
     <div style={{margin: 30}}>
