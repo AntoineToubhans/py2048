@@ -2,11 +2,11 @@ import React from "react";
 import { useRouter } from 'next/router';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Layout from '../../../../components/Layout';
+import withLayout from '../../../../components/Layout';
 import TransitionContainer from "../../../../components/TransitionContainer";
 
 
-const AgentTraceTransitionsContent = () => {
+const AgentTraceTransitions = () => {
   const router = useRouter();
   const agentId = router.query.agentId;
   const traceId = router.query.traceId;
@@ -18,10 +18,4 @@ const AgentTraceTransitionsContent = () => {
   }
 };
 
-const AgentTraceTransitions = () => (
-  <Layout>
-    <AgentTraceTransitionsContent />
-  </Layout>
-);
-
-export default AgentTraceTransitions;
+export default withLayout(AgentTraceTransitions);

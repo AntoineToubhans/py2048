@@ -1,11 +1,11 @@
 import React from "react";
 import { useRouter } from 'next/router';
 
-import Layout from '../../../components/Layout';
+import withLayout from '../../../components/Layout';
 import TraceTable from "../../../components/TraceTable";
 
 
-const AgentTracesContent = () => {
+const AgentTraces = () => {
   const router = useRouter();
   const agentId = router.query.agentId;
 
@@ -16,10 +16,4 @@ const AgentTracesContent = () => {
   }
 };
 
-const AgentTraces = () => (
-  <Layout>
-    <AgentTracesContent />
-  </Layout>
-);
-
-export default AgentTraces;
+export default withLayout(AgentTraces);

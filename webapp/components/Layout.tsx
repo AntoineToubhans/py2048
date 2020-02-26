@@ -1,15 +1,12 @@
 import React from 'react';
 import Head from "next/head";
+import { NextPage } from "next";
 
 import { colors } from '../stylesheet';
 import Header from './Header';
 
 
-interface AuxProps  { 
-  children: React.ReactNode
-}
-
-const Layout: React.FC<AuxProps> = props => (
+const withLayout = (Page: NextPage) => () => (
   <>
     <Head>
       <title>2048 Trace Explorer</title>
@@ -26,7 +23,7 @@ const Layout: React.FC<AuxProps> = props => (
     </Head>
     <Header/>
     <div style={{margin: 30}}>
-      {props.children}
+      <Page />
     </div>
     <style jsx global>{`
       body {
@@ -40,4 +37,4 @@ const Layout: React.FC<AuxProps> = props => (
   </>
 );
 
-export default Layout;
+export default withLayout;
