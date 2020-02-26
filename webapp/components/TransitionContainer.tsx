@@ -1,21 +1,20 @@
 import React from "react";
 import Grid from '@material-ui/core/Grid';
-import useSWR from 'swr';
 
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ForwardIcon from '@material-ui/icons/Forward';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import {Divider} from "@material-ui/core";
 
 import GameContainer from "./GameContainer";
 import GameKPIContainer from "./GameKPIContainer";
-import { Transition } from "../types/transition";
-import { formatComputeTime } from "../services/formatHelpers";
-import { GameAction } from "../types/game";
 import TraceCard from "./TraceCard";
+import { formatComputeTime } from "../services/formatHelpers";
+import { Transition } from "../types/transition";
+import { GameAction } from "../types/game";
+import { Trace } from "../types/trace";
 
 
 const getActionIcon = (action: GameAction): React.ReactNode => {
@@ -32,23 +31,10 @@ const getActionIcon = (action: GameAction): React.ReactNode => {
 };
 
 interface TransitionContainerProps {
-  agentId: string;
-  traceId: string;
+  trace: Trace;
 }
 
-const fetcher = (url: string) => (
-  fetch(url).then(r => r.json())
-);
-
-const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, traceId}) => {
-  const { data, error } = useSWR(`/api/traces/${traceId}`, fetcher);
-
-  if (!data) {
-    return (
-      <CircularProgress />
-    );
-  }
-
+const TransitionContainer: React.FC<TransitionContainerProps> = ({trace}) => {
   const transition: Transition = {
     id: "Pf4wV3ABBiPUjHVumvfO",
     agent_trace_id: "6P4wV3ABBiPUjHVumfZ4",
@@ -96,7 +82,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
 
   return (
     <>
-      <TraceCard trace={data}/>
+      <TraceCard trace={trace}/>
       <Divider />
       <Grid
         container
@@ -120,7 +106,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({ agentId, trac
         <Grid item xs={2}>
           <GameKPIContainer
             title="Transition index"
-            value={`${transition.transition_index} / ${data.length}`}
+            value={`${transition.transition_index} / ${trace.length}`}
           />
           <GameKPIContainer
             title="Reward"
