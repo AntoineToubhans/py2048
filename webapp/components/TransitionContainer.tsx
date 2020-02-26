@@ -11,6 +11,7 @@ import {Divider} from "@material-ui/core";
 import GameContainer from "./GameContainer";
 import GameKPIContainer from "./GameKPIContainer";
 import TraceCard from "./TraceCard";
+import withData from "./DataLoaderWrapper";
 import { formatComputeTime } from "../services/formatHelpers";
 import { Transition } from "../types/transition";
 import { GameAction } from "../types/game";
@@ -31,10 +32,10 @@ const getActionIcon = (action: GameAction): React.ReactNode => {
 };
 
 interface TransitionContainerProps {
-  trace: Trace;
+  data: Trace;
 }
 
-const TransitionContainer: React.FC<TransitionContainerProps> = ({trace}) => {
+const TransitionContainer: React.FC<TransitionContainerProps> = ({data}) => {
   const transition: Transition = {
     id: "Pf4wV3ABBiPUjHVumvfO",
     agent_trace_id: "6P4wV3ABBiPUjHVumfZ4",
@@ -82,7 +83,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({trace}) => {
 
   return (
     <>
-      <TraceCard trace={trace}/>
+      <TraceCard trace={data}/>
       <Divider />
       <Grid
         container
@@ -106,7 +107,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({trace}) => {
         <Grid item xs={2}>
           <GameKPIContainer
             title="Transition index"
-            value={`${transition.transition_index} / ${trace.length}`}
+            value={`${transition.transition_index} / ${data.length}`}
           />
           <GameKPIContainer
             title="Reward"
@@ -129,4 +130,4 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({trace}) => {
   )
 };
 
-export default TransitionContainer;
+export default withData(TransitionContainer);
