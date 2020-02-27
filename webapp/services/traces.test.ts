@@ -39,7 +39,7 @@ describe("getTraces()", () => {
       });
   });
 
-  it("should returns traces", async () => {
+  it("should return traces", async () => {
     expect(await getTraces("hf4wV3ABBiPUjHVuce72", 1, 0, "score:desc")).toEqual({
       totalCount: 42,
       traces: [{
@@ -68,7 +68,7 @@ describe("getOneById()", () => {
       .reply(200, RAW_TRACE);
   });
 
-  it("should returns traces", async () => {
+  it("should return one trace", async () => {
     expect(await getOneById("pv4wV3ABBiPUjHVugvFI")).toEqual({
       id: "pv4wV3ABBiPUjHVugvFI",
       agent_id: "hf4wV3ABBiPUjHVuce72",
