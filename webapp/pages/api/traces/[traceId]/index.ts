@@ -1,4 +1,4 @@
-import { getOneById } from "../../../services/traces";
+import { getOneById } from "../../../../services/traces";
 
 export default async (req, res) => {
   const trace = await getOneById(req.query.traceId);

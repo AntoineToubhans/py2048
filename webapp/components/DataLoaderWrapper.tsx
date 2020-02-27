@@ -1,5 +1,6 @@
 import React from "react";
 import useSWR from 'swr';
+import { Subtract } from 'utility-types';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -17,27 +18,37 @@ const fetcher = (url: string) => (
   fetch(url).then(r => r.json())
 );
 
-const withData = (WrappedComponent: React.FC<WrappedComponentProps>): React.FC<WrapperComponentProps> => ({url}) => {
-  const { data, error } = useSWR(url, fetcher);
+const withData = <T extends WrappedComponentProps>(
+  WrappedComponent: React.ComponentType<T>
+): React.FC<
+    Subtract<T, WrappedComponentProps> & WrapperComponentProps
+  > => ({url, ...otherProps}) => {
+    const {data, error} = useSWR(url, fetcher);
 
-  if (!data) {
-    return (
-      <div style={{textAlign: "center"}}>
-        <CircularProgress />
-      </div>
-    );
-  }
-  if (error) {
-    return (
-      <>
-        <ErrorIcon /> An error occurred.
-      </>
-    );
-  }
+    if (!data) {
+      return (
+        <div style={{textAlign: "center", margin: 10}}>
+          <CircularProgress/>
+        </div>
+      );
+    }
+    if (error) {
+      return (
+        <>
+          <ErrorIcon/> An error occurred.
+        </>
+      );
+    }
 
-  return (
-    <WrappedComponent data={data} />
-  );
-};
+    // Hack to trick typescript
+    const unknownOtherProps: unknown = otherProps;
+
+    return (
+      <WrappedComponent
+        {...unknownOtherProps as T}
+        data={data}
+      />
+    );
+  };
 
 export default withData;
