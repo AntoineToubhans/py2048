@@ -7,7 +7,7 @@ export default async (req, res) => {
   const transition: Transition = {
     id: "Pf4wV3ABBiPUjHVumvfO",
     agent_trace_id: traceId,
-    transition_index: transitionIndex,
+    transition_index: parseInt(transitionIndex),
     state_before_action: {
       c0_0: 2,
       c0_1: 4,

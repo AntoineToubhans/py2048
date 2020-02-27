@@ -59,7 +59,7 @@ const TransitionContainer: React.FC<TransitionContainerProps> = ({data, traceLen
       <Grid item xs={2}>
         <GameKPIContainer
           title="Transition index"
-          value={`${transition.transition_index} / ${traceLength}`}
+          value={`${transition.transition_index + 1} / ${traceLength}`}
         />
         <GameKPIContainer
           title="Reward"
