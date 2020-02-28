@@ -1,49 +1,54 @@
+import {
+  RequestParams,
+  ApiResponse,
+} from '@elastic/elasticsearch'
+
+import { client, SearchResponse } from "./esHelpers";
 import {Transition} from "../types/transition";
 
+type TraceSearchFilter = { "agent_trace_id.keyword": string };
+type TransitionIndexSearchFilter = { transition_index: number };
+type SearchFilter = { term: TraceSearchFilter | TransitionIndexSearchFilter };
 
-export const getTransition = (traceId: string, transitionIndex: number): Transition => {
-  return {
-    id: "Pf4wV3ABBiPUjHVumvfO",
-    agent_trace_id: traceId,
-    transition_index: transitionIndex,
-    state_before_action: {
-      c0_0: 2,
-      c0_1: 4,
-      c0_2: 16,
-      c0_3: 2,
-      c1_0: 4,
-      c1_1: 64,
-      c1_2: 64,
-      c1_3: 8,
-      c2_0: 8,
-      c2_1: 8,
-      c2_2: 8,
-      c2_3: 0,
-      c3_0: 4,
-      c3_1: 0,
-      c3_2: 2,
-      c3_3: 0,
-    },
-    action: "RIGHT",
-    reward: 144,
-    action_compute_time: 0.0000019073486328125,
-    state_after_action: {
-      c0_0: 2,
-      c0_1: 4,
-      c0_2: 16,
-      c0_3: 2,
-      c1_0: 0,
-      c1_1: 4,
-      c1_2: 128,
-      c1_3: 8,
-      c2_0: 0,
-      c2_1: 0,
-      c2_2: 8,
-      c2_3: 16,
-      c3_0: 2,
-      c3_1: 0,
-      c3_2: 4,
-      c3_3: 2,
-    },
+interface SearchBody {
+  query: {
+    bool: {
+      filter: SearchFilter[],
+    }
   };
+}
+
+type TransitionSource = Omit<Transition, "id">;
+
+const index = "agent_trace_transitions";
+
+export const getTransition = async (traceId: string, transitionIndex: number): Promise<Transition> => {
+  const searchParams: RequestParams.Search<SearchBody> = {
+    index,
+    body: {
+      query: {
+        bool: {
+          filter: [
+            {term: {"agent_trace_id.keyword": traceId}},
+            {term: {transition_index: transitionIndex}},
+          ],
+        },
+      },
+    },
+    size: 1,
+  };
+
+  const response: ApiResponse<SearchResponse<TransitionSource>> = await client.search(searchParams);
+
+  const transitions = response.body.hits.hits.map(
+    rawTrace => ({
+      id: rawTrace._id,
+      ...rawTrace._source,
+    })
+  );
+
+  if (transitions.length == 0) throw "No transition found";
+  if (transitions.length > 1) throw "Too many transitions found";
+
+  return transitions[0];
 };
