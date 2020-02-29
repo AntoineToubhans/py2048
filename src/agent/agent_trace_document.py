@@ -7,6 +7,8 @@ from elasticsearch_dsl import (
     Object,
 )
 
+from src.game import Action
+
 
 class AgentTraceActionRatioInnerDoc(InnerDoc):
     UP = Float()
@@ -71,11 +73,19 @@ class StateInnerDoc(InnerDoc):
         )
 
 
+class AgentTraceTransitionActionProbabilitiesInnerDoc(InnerDoc):
+    UP = Float()
+    DOWN = Float()
+    LEFT = Float()
+    RIGHT = Float()
+
+
 class AgentTraceTransitionDocument(Document):
     agent_trace_id = Keyword()
     transition_index = Integer()
     state_before_action = Object(StateInnerDoc)
     action = Keyword()
+    action_probabilities = Object(AgentTraceTransitionActionProbabilitiesInnerDoc)
     reward = Integer()
     action_compute_time = Float()
     state_after_action = Object(StateInnerDoc)
@@ -95,6 +105,11 @@ class AgentTraceTransitionDocument(Document):
         Returns:
             AgentTraceTransitionDocument: the document that can be saved in es.
         """
+        action_probabilities = {
+            action.name: transition_dict["action_probabilities"].get(action, 0)
+            for action in Action
+        }
+
         return AgentTraceTransitionDocument(
             agent_trace_id=agent_trace_id,
             transition_index=transition_index,
@@ -102,6 +117,7 @@ class AgentTraceTransitionDocument(Document):
                 transition_dict["state_before_action"]
             ),
             action=transition_dict["action"].name,
+            action_probabilities=action_probabilities,
             reward=transition_dict["reward"],
             action_compute_time=transition_dict["action_compute_time"],
             state_after_action=StateInnerDoc.from_state(

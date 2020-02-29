@@ -16,17 +16,21 @@ class AgentTrace:
 
     def __init__(self):
         self._states = []
+        self._action_probabilities = []
         self._actions = []
         self._rewards = []
         self._action_compute_times = []
         self._final_state = None
 
-    def append(self, state, action, reward, action_compute_time):
+    def append(
+        self, state, action_probabilities, chosen_action, reward, action_compute_time
+    ):
         """ Add a transition to an agent trace.
 
         Args:
             state (numpy.ndarray): a state
-            action (src.game.Action): the action chosen by the agent
+            action_probabilities (Dict[src.game.Action, float]: probabilities per action
+            chosen_action (src.game.Action): the action chosen by the agent
             reward (int): the reward following the action
             action_compute_time (float): time for the agent to compute the action
         Raises:
@@ -36,7 +40,8 @@ class AgentTrace:
             raise AgentTraceFinalStateAlreadySetError
 
         self._states.append(state)
-        self._actions.append(action.value)
+        self._action_probabilities.append(action_probabilities)
+        self._actions.append(chosen_action.value)
         self._rewards.append(reward)
         self._action_compute_times.append(action_compute_time)
 
@@ -61,6 +66,7 @@ class AgentTrace:
         return {
             "state_before_action": self._states[item],
             "action": Action(self._actions[item]),
+            "action_probabilities": self._action_probabilities[item],
             "reward": self._rewards[item],
             "action_compute_time": self._action_compute_times[item],
             "state_after_action": self._final_state
