@@ -25,7 +25,7 @@ def test_agent_returns_action_probabilities(initial_state, agent):
     )
 
     assert len(action_probabilities) == 4
-    assert sum(action_probabilities.values()) == 1
+    assert sum(action_probabilities.values()) == pytest.approx(1)
 
     for action in Action:
         assert action in action_probabilities

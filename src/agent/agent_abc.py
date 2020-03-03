@@ -3,6 +3,14 @@ import abc
 
 class AbstractAgent(abc.ABC):
     @abc.abstractmethod
+    def get_parameters(self):
+        """ Returns a dictionary containing all agent parameters.
+
+        Returns:
+              Dict: the agent parameters.
+        """
+
+    @abc.abstractmethod
     def get_action_probabilities(self, state, available_actions):
         """
         Args:

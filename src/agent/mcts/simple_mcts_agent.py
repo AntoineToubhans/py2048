@@ -25,6 +25,11 @@ class SimpleMonteCarloTreeSearchAgent(AbstractAgent):
         self._number_of_run = number_of_run
         self._random_agent = RandomAgent()
 
+    def get_parameters(self):
+        return {
+            "number_of_run": self._number_of_run,
+        }
+
     def get_action_probabilities(self, state, available_actions):
         """
         Args:

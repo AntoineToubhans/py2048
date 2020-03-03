@@ -6,6 +6,10 @@ from .agent_abc import AbstractAgent
 
 class RandomAgent(AbstractAgent):
     @staticmethod
+    def get_parameters():
+        return {}
+
+    @staticmethod
     def get_action_probabilities(state, available_actions):
         """
         Args:
