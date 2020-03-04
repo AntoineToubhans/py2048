@@ -49,7 +49,16 @@ def test_can_not_append_when_final_state_has_been_set(state2, trace):
 
     with pytest.raises(AgentTraceFinalStateAlreadySetError):
         trace.append(
-            state=state2, reward=32, action=Action.DOWN, action_compute_time=2.345
+            state=state2,
+            reward=32,
+            action_probabilities={
+                Action.UP: 0,
+                Action.DOWN: 1,
+                Action.LEFT: 0.2,
+                Action.RIGHT: 0,
+            },
+            chosen_action=Action.DOWN,
+            action_compute_time=2.345,
         )
 
 
